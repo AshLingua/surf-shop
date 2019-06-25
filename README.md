@@ -74,3 +74,4 @@
 - Include the partial in your /views/posts/index.ejs view (I include it twice, once above the posts loop and once below)
 	`<% include ../partials/paginatePosts %>`
 
+"# surf-shop-map" 
