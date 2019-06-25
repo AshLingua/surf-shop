@@ -1,9 +1,9 @@
-require('dotenv').config();
+// require('dotenv').config();
 
 const express = require('express');
 const engine = require('ejs-mate');
 const path = require('path');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -16,8 +16,8 @@ const methodOverride = require('method-override');
 // seedPosts();
 
 // require routes
-const index 	= require('./routes/index');
-const posts 	= require('./routes/posts');
+const index = require('./routes/index');
+const posts = require('./routes/posts');
 const reviews = require('./routes/reviews');
 
 const app = express();
@@ -28,7 +28,7 @@ mongoose.connect('mongodb://localhost:27017/surf-shop', { useNewUrlParser: true 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  console.log('we\'re connected!');
+    console.log('we\'re connected!');
 });
 
 // use ejs-locals for all ejs templates:
@@ -50,9 +50,9 @@ app.use(methodOverride('_method'));
 
 // Configure Passport and Sessions
 app.use(session({
-  secret: 'hang ten dude!',
-  resave: false,
-  saveUninitialized: true
+    secret: 'plus ca change!',
+    resave: false,
+    saveUninitialized: true
 }));
 
 app.use(passport.initialize());
@@ -64,21 +64,22 @@ passport.deserializeUser(User.deserializeUser());
 
 // set local variables middleware
 app.use(function(req, res, next) {
-  req.user = {
-    '_id' : '5bb27cd1f986d278582aa58c',
-    'username' : 'ian'
-  }
-  res.locals.currentUser = req.user;
-  // set default page title
-  res.locals.title = 'Surf Shop';
-  // set success flash message
-  res.locals.success = req.session.success || '';
-  delete req.session.success;
-  // set error flash message
-  res.locals.error = req.session.error || '';
-  delete req.session.error;
-  // continue on to next function in middleware chain
-  next();
+    req.user = {
+        '_id': '5d0dd16914e51e552114d9bc',
+        'username': 'ais'
+    }
+
+    res.locals.currentUser = req.user;
+    // set default page title
+    res.locals.title = 'Surf Shop';
+    // set success flash message
+    res.locals.success = req.session.success || '';
+    delete req.session.success;
+    // set error flash message
+    res.locals.error = req.session.error || '';
+    delete req.session.error;
+    // continue on to next function in middleware chain
+    next();
 });
 
 // Mount routes
@@ -86,25 +87,35 @@ app.use('/', index);
 app.use('/posts', posts);
 app.use('/posts/:id/reviews', reviews);
 
+app.use(function(req, res, next) {
+
+    res.header("Access-Control-Allow-Origin", "localhost", "https://api.mapbox.com/*", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, GET, DELETE');
+        return res.status(200).json({});
+    }
+    next();
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // // set locals, only providing error in development
-  // res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // // set locals, only providing error in development
+    // res.locals.message = err.message;
+    // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // // render the error page
-  // res.status(err.status || 500);
-  // res.render('error');
-  console.log(err);
-  req.session.error = err.message;
-  res.redirect('back');
+    // // render the error page
+    // res.status(err.status || 500);
+    // res.render('error');
+    console.log(err);
+    req.session.error = err.message;
+    res.redirect('back');
 });
 
 module.exports = app;

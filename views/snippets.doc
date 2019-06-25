@@ -1,0 +1,35 @@
+app.use(function(req, res, next) {
+    req.user = {
+        '_id' : '5d0dd16914e51e552114d9bc',
+        'username' : 'ais'
+        }
+
+// Configure Passport and Sessions
+app.use(session({
+    secret: 'plus ca change!',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(function(req, res, next) {
+
+    res.header("Access-Control-Allow-Origin", "localhost", "https://api.mapbox.com/*", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, GET, DELETE');
+        return res.status(200).json({});
+    }
+    next();
+});
+
+//// landing page view removed map code
+ <div id='map'></div>
+
+    // <script>
+    //     mapboxgl.accessToken = "<%= mapBoxToken %>";
+    //     var posts = {
+    //         features: <%- JSON.stringify(posts) %>
+    //     };
+    // </script>
+
+    // <script src="javascripts/allPostsClusterMap.js"></script>

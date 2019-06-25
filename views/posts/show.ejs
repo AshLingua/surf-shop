@@ -3,6 +3,8 @@
 <div>Price: <%= post.price %></div>
 <div><%= post.description %></div>
 <div><%= post.location %></div>
+<div>Avg Rating:&nbsp<%= post.avgRating %></div>
+
 <div>
 	<% post.images.forEach(function(image) { %>
 	<img src="<%= image.url %>" alt="Surf board image" width="200px">
@@ -87,6 +89,22 @@
 	<% } %>
 	<hr>
 
-
-
 <% }); %>
+
+<script>
+//  
+//  $('.toggle-edit-form').on('click', function() {
+// 	// toggle the edit button text on click
+// 	$(this).text() === 'Edit' ? $(this).text('Cancel') : $(this).text('Edit');
+// 	// toggle visibility of the edit review form
+// 	$(this).siblings('.edit-review-form').toggle();
+
+// if( $(this).text() === "Cancel") {
+// 	$(this).closest(".edit-review-form").removeClass("hide");
+// 	$(this).closest(".edit-review-form").addClass("show");
+// }
+// });
+
+
+</script>
+// <script src="/javascripts/post-edit.js"></script>
